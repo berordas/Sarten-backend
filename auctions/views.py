@@ -14,17 +14,18 @@ from .serializers import (
 from django.db.models import Q
 
 from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
-from .permissions import IsOwnerOrAdmin, IsAuthenticatedOrReadOnly
-
+from .permissions import IsOwnerOrAdmin, IsAuthenticatedOrReadOnly, IsAdminOrReadOnly
 
 class CategoryListCreate(generics.ListCreateAPIView):
+    permission_classes = [IsAdminOrReadOnly]
     queryset = Category.objects.all()
     serializer_class = CategoryListCreateSerializer
 
 
 class CategoryRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [IsAdminUser]
     queryset = Category.objects.all()
     serializer_class = CategoryDetailSerializer
 

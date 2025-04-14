@@ -1,6 +1,19 @@
 from rest_framework.permissions import BasePermission, SAFE_METHODS
 
 
+class IsAdminOrReadOnly(BasePermission):
+    """
+    Permite lectura a cualquiera, pero solo permite escritura (POST, PUT, DELETE)
+    a usuarios administradores.
+    """
+
+    def has_permission(self, request, view):
+        # Permitir siempre los métodos seguros como GET
+        if request.method in SAFE_METHODS:
+            return True
+        # Solo permitir escritura a administradores
+        return request.user and request.user.is_staff
+
 class IsOwnerOrAdmin(BasePermission):
     """
     Permite editar/eliminar una subasta solo si el usuario es el propietario
