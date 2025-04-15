@@ -24,8 +24,17 @@ class IsOwnerOrAdmin(BasePermission):
         # Permitir acceso de lectura a cualquier usuario (GET, HEAD, OPTIONS)
         if request.method in SAFE_METHODS:
             return True
-        # Permitir si el usuario es el creador o es administrador
-        return obj.auctioneer == request.user or request.user.is_staff
+
+        # Si el objeto es una subasta (Auction)
+        if hasattr(obj, 'auctioneer'):
+            return obj.auctioneer == request.user or request.user.is_staff
+
+        # Si el objeto es una puja (Bid)
+        if hasattr(obj, 'auction'):
+            return obj.auction.auctioneer == request.user or request.user.is_staff
+
+        # Por defecto, denegar el acceso
+        return False
 
 
 class IsAuthenticatedOrReadOnly(BasePermission):
