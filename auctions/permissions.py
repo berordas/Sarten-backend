@@ -31,8 +31,7 @@ class IsOwnerOrAdmin(BasePermission):
 
         # Si el objeto es una puja (Bid)
         if hasattr(obj, 'bidder'):
-            print('Entro')
-            return obj.bidder == request.user or request.user.is_staff
+            return str(obj.bidder) == str(request.user) or request.user.is_staff
 
         # Por defecto, denegar el acceso
         return False
