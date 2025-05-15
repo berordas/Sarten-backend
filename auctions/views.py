@@ -24,7 +24,7 @@ from rest_framework.response import Response
 from .permissions import IsOwnerOrAdmin, IsAuthenticatedOrReadOnly, IsAdminOrReadOnly
 
 class CategoryListCreate(generics.ListCreateAPIView):
-    permission_classes = [IsAdminOrReadOnly]
+    # permission_classes = [IsAdminOrReadOnly]
     queryset = Category.objects.all()
     serializer_class = CategoryListCreateSerializer
 
